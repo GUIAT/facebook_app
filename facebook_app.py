@@ -23,7 +23,8 @@ class Verification(Resource): # Not Student anymore
         verification_parameters.append(received_data)
 
         if token == received_data['hub.verify_token']:
-            return received_data['hub.challenge']
+            challenge = received_data['hub.challenge'] 
+            return challenge
 
     def post (self):
         return verification_parameters
