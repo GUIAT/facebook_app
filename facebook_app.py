@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
@@ -13,18 +13,22 @@ verification_parameters = []
 
 class Verification(Resource): # Not Student anymore
     parser = reqparse.RequestParser()
-    parser.add_argument('hub.mode', type=str)
-    parser.add_argument('hub.challenge', type=str)
-    parser.add_argument('hub.verify_token', type=str)
+    parser.add_argument('hub.mode')
+    parser.add_argument('hub.challenge')
+    parser.add_argument('hub.verify_token')
 
     
     def get (self):
         received_data = Verification.parser.parse_args()
-        verification_parameters.append(received_data)
+        #verification_parameters.append(received_data)
+        verification_data = {
+                            'hub.mode' : received_data['hub.mode'],
+                            'hub.challenge' : received_data['hub.challenge'],
+                            'hub.verify_token' : received_data['hub.verify_token']
+                            }
 
         if token == received_data['hub.verify_token']:
-            challenge = received_data['hub.challenge'] 
-            return challenge
+            return jsonify(verification_data['hub.challenge'])
 
     def post (self):
         return verification_parameters
