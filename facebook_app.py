@@ -21,14 +21,9 @@ class Verification(Resource): # Not Student anymore
     def get (self):
         received_data = Verification.parser.parse_args()
         #verification_parameters.append(received_data)
-        verification_data = {
-                            'hub.mode' : received_data['hub.mode'],
-                            'hub.challenge' : received_data['hub.challenge'],
-                            'hub.verify_token' : received_data['hub.verify_token']
-                            }
-
+       
         if token == received_data['hub.verify_token']:
-            return jsonify(verification_data['hub.challenge'])
+            return int(received_data['hub.challenge'])
 
     def post (self):
         return verification_parameters
