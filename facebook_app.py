@@ -38,9 +38,13 @@ class Verification(Resource): # Not Student anymore
 # PAYLOAD
 #class Payload(Resource): 
     def post (self):
-        update = request.get_json()
+        parser = reqparse.RequestParser()
+        parser.add_argument('field')
+        parser.add_argument('value')
+
+        update = parser.parse_args()
         received_updates.append(update)
-        return update['field']
+        return received_updates
 
 # APP NECESSITIES
 api.add_resource(Verification, '/verification') # Not Student anymore
