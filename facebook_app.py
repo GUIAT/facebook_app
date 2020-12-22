@@ -38,11 +38,7 @@ class Verification(Resource): # Not Student anymore
 # PAYLOAD
 #class Payload(Resource): 
     def get (self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('field')
-        parser.add_argument('value')
-
-        update = parser.parse_args()
+        update = get_json()
         received_updates.append(update)
         return received_updates
 
