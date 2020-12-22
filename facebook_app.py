@@ -40,7 +40,7 @@ class Verification(Resource): # Not Student anymore
     def post (self):
         update = request.get_json()
         received_updates.append(update)
-        return received_updates, 404
+        return update
 
 # APP NECESSITIES
 api.add_resource(Verification, '/verification') # Not Student anymore
