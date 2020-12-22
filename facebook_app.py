@@ -38,7 +38,7 @@ class Verification(Resource): # Not Student anymore
 # PAYLOAD
 #class Payload(Resource): 
     def get (self):
-        update = get_json()
+        update = request.get_json()
         received_updates.append(update)
         return received_updates
 
