@@ -37,7 +37,7 @@ class Verification(Resource): # Not Student anymore
 
 # PAYLOAD
 #class Payload(Resource): 
-    def post (self):
+    def get (self):
         parser = reqparse.RequestParser()
         parser.add_argument('field')
         parser.add_argument('value')
