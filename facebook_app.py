@@ -4,7 +4,7 @@
 # https://developers.facebook.com/docs/graph-api/webhooks/getting-started?locale=en_US
 # Sample app :https://developers.facebook.com/docs/graph-api/webhooks/sample-apps
 # video taht might help : https://www.youtube.com/watch?v=82cpdEisqsA&t=246s
-from flask import Flask, request
+from flask import Flask, request,  jsonify
 from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
@@ -19,6 +19,7 @@ received_updates = []
 
 
 class Verification(Resource): # Not Student anymore
+    '''
     parser = reqparse.RequestParser()
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
@@ -34,11 +35,17 @@ class Verification(Resource): # Not Student anymore
 
 #    def post (self):
 #        return verification_parameters
-
+'''
 # PAYLOAD
 #class Payload(Resource): 
-    def get (self):
-        update = request.get_json()
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('field')
+    parser.add_argument('value')
+
+    def post (self):
+        update = Verification.parser.parse_args()
+
         received_updates.append(update)
         return received_updates
 
