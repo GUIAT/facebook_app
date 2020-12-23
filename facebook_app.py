@@ -33,11 +33,6 @@ class Updates(Resource):
         received_updates = Updates.parser.parse_args()
         app.logger.info('All good so far')                #DELETE ONCE DONE
         return received_updates
-    
-    def post (self):
-        received_updates = Updates.parser.parse_args()
-        app.logger.info('TEST')                #DELETE ONCE DONE
-        return received_updates
 
 # ------------------------LINES 28 /37 == OK
 class Verification(Resource): 
@@ -58,6 +53,12 @@ class Verification(Resource):
             return int(received_data["hub.challenge"])
 
 # ------------------------LINES 39 /52 == ?
+
+    def post (self):
+            update = request.get_json()
+            app.logger.info('TEST')   
+            received_updates.append(update)            #DELETE ONCE DONE
+            return received_updates
 
     
 
