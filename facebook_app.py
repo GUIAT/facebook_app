@@ -37,9 +37,12 @@ class Updates(Resource):
 # ------------------------LINES 28 /37 == OK
 class Verification(Resource): 
     parser = reqparse.RequestParser()
-    parser.add_argument('hub.mode')
-    parser.add_argument('hub.challenge')
-    parser.add_argument('hub.verify_token')
+    parser.add_argument('hub.mode', location='form')
+    parser.add_argument('hub.challenge', location='form')
+    parser.add_argument('hub.verify_token', location='form')
+    parser.add_argument('field') #, type=list, location='json'
+    parser.add_argument('value') #, type=list, location='json'
+    
 
     def get (self):
         received_data = Verification.parser.parse_args()
@@ -55,10 +58,13 @@ class Verification(Resource):
 # ------------------------LINES 39 /52 == ?
 
     def post (self):
-            update = request.get_json()
-            app.logger.info('TEST')   
-            received_updates.append(update)            #DELETE ONCE DONE
-            return received_updates
+        received_data = Verification.parser.parse_args()
+        received_updates.append(received_data['field'])
+        received_updates.append(received_data['value'])          #DELETE ONCE DONE
+
+        app.logger.info(received_data['field'])  
+        app.logger.info(received_data['value'])  
+        return received_updates
 
     
 
