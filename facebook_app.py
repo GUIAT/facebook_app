@@ -4,54 +4,65 @@
 # https://developers.facebook.com/docs/graph-api/webhooks/getting-started?locale=en_US
 # Sample app :https://developers.facebook.com/docs/graph-api/webhooks/sample-apps
 # video taht might help : https://www.youtube.com/watch?v=82cpdEisqsA&t=246s
-from flask import Flask, request,  jsonify
+
+from flask import Flask, request,  jsonify, abort
 from flask_restful import Resource, Api, reqparse
+from os import environ
+import hmac
+from hashlib import sha1
 
 app = Flask(__name__)
 api = Api(app)
 
-# VARIABLES not sure if keep
 
-token = '12345' #figure out a way to get this from heroku
-verification_parameters = []
+# ------------------------LINES 9 /18 == ?
+
+
+# ------------------------LINES 20 /21 == OK
+token = str(12345)                            #DELETE ONCE DONE / We will use CONFIG VARS from Heroku once done      
+#token = environ.get("TOKEN") or 'token'       PUT BACK ONCE DONE/ CHEKC IF THIS WORKS IN HEROKU /make sure this is a striiiinngggg
 received_updates = []
 
+# ------------------------LINES 23 /26 == OK
+class Updates(Resource): 
+    parser = reqparse.RequestParser()
+    parser.add_argument('field')
+    parser.add_argument('value')
 
+    def get (self):
+        received_updates = Updates.parser.parse_args()
+        app.logger.info('All good so far')                #DELETE ONCE DONE
+        return received_updates
 
-class Verification(Resource): # Not Student anymore
-    '''
+# ------------------------LINES 28 /37 == OK
+class Verification(Resource): 
     parser = reqparse.RequestParser()
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token')
 
-    
     def get (self):
         received_data = Verification.parser.parse_args()
-        #verification_parameters.append(received_data)
-       
-        if token == received_data['hub.verify_token']:
-            return int(received_data['hub.challenge'])
+        # Debugging logs
+        app.logger.info(token)  
+        app.logger.info(received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token) 
+        app.logger.info(received_data['hub.mode'] == 'subscribe') 
+        app.logger.info(received_data['hub.verify_token'] == token) 
 
-#    def post (self):
-#        return verification_parameters
+        if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
+            return int(received_data["hub.challenge"])
+
+# ------------------------LINES 39 /52 == ?
 '''
-# PAYLOAD
-#class Payload(Resource): 
+    def post (self, request):
+        if ""
+        app.logger.info ('Facebook request body:')
+'''
 
-    parser = reqparse.RequestParser()
-    parser.add_argument('field')
-    parser.add_argument('value')
+# ROUTING
+api.add_resource(Updates, '/') 
+api.add_resource(Verification, '/facebook') 
 
-    def post (self):
-        update = Verification.parser.parse_args()
-
-        received_updates.append(update)
-        return received_updates
-
-# APP NECESSITIES
-api.add_resource(Verification, '/verification') # Not Student anymore
-#api.add_resource(Payload, '/stories') # Not Student anymore
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
