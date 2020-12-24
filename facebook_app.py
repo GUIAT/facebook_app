@@ -56,7 +56,8 @@ class Verification(Resource):
         if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
             return int(received_data["hub.challenge"])
 
-        return {'Request' : 'Bad request'}, 400
+        else:
+            {'Request' : 'Bad request'}, 400
         
 
 
