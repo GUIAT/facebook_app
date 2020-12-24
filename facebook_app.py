@@ -19,8 +19,8 @@ api = Api(app)
 
 
 # ------------------------LINES 20 /21 == OK
-token = str(12345)                            #DELETE ONCE DONE / We will use CONFIG VARS from Heroku once done      
-#token = environ.get("TOKEN") or 'token'       PUT BACK ONCE DONE/ CHEKC IF THIS WORKS IN HEROKU /make sure this is a striiiinngggg
+#token = str(12345)                            #DELETE ONCE DONE / We will use CONFIG VARS from Heroku once done      
+token = environ.get("TOKEN") or 'token'       # PUT BACK ONCE DONE/ CHEKC IF THIS WORKS IN HEROKU /make sure this is a striiiinngggg
 received_updates = []
 
 # ------------------------LINES 23 /26 == OK
