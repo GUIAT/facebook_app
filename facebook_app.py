@@ -64,8 +64,11 @@ class Verification(Resource):
         received_updates.append(received_data['value'])          #DELETE ONCE DONE
 
         app.logger.info(received_data['field'])  
-        app.logger.info(received_data['value'])  
-        return received_updates
+        app.logger.info(received_data['value']) 
+        app.logger.info("TESTING") 
+        app.logger.info(received_updates)  
+        app.logger.info(type(received_updates))  
+        return {'Received_updates' : received_updates}
 
     
 
