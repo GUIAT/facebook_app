@@ -25,13 +25,13 @@ received_updates = []
 
 # ------------------------LINES 23 /26 == OK
 class Updates(Resource): 
-    parser = reqparse.RequestParser()
-    parser.add_argument('field')
-    parser.add_argument('value')
+    #parser = reqparse.RequestParser()
+    #parser.add_argument('field')
+    #parser.add_argument('value')
 
     def get (self):
-        received_updates = Updates.parser.parse_args()
-        app.logger.info('All good so far')                #DELETE ONCE DONE
+        #received_updates = Updates.parser.parse_args()
+        #app.logger.info('All good so far')                #DELETE ONCE DONE
         return {'Received_updates' : received_updates}
 
 # ------------------------LINES 28 /37 == OK
@@ -40,8 +40,8 @@ class Verification(Resource):
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('field') #, type=list, location='json'
-    parser.add_argument('value') #, type=list, location='json'
+    parser.add_argument('field', required = True) #, type=list, location='json'
+    parser.add_argument('value', required = True) #, type=list, location='json'
     
 
     def get (self):
@@ -55,7 +55,9 @@ class Verification(Resource):
 
         if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
             return int(received_data["hub.challenge"])
-        return {'Received_updates' : received_updates}
+
+        return {'Request' : 'Bad request'}, 400
+        
 
 
 # ------------------------LINES 39 /52 == ?
@@ -70,18 +72,13 @@ class Verification(Resource):
         app.logger.info("TESTING") 
         app.logger.info(received_updates)  
         app.logger.info(type(received_updates))  
-        return {'Received_updates' : received_updates}
+        return {'Received_updates' : received_updates}, 200
 
-    
-
-'''
-        if ""
-        app.logger.info ('Facebook request body:')
-'''
 
 # ROUTING
 api.add_resource(Updates, '/') 
-api.add_resource(Verification, '/facebook') 
+#api.add_resource(Verification, '/facebook')
+api.add_resource(Verification, '/instagram')  
 
 
 if __name__ == '__main__':
