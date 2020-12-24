@@ -60,14 +60,13 @@ class Verification(Resource):
 
     def post (self):
         received_data = Verification.parser.parse_args()
-        received_updates.append(received_data['field'])
-        received_updates.append(received_data['value'])          #DELETE ONCE DONE
+        isThereData = received_data['field']
+        app.logger.info(isThereData) 
 
-        app.logger.info(received_data['field'])  
-        app.logger.info(received_data['value']) 
-        app.logger.info("TESTING") 
-        app.logger.info(received_updates)  
-        app.logger.info(type(received_updates))  
+        if isThereData :
+            received_updates.append(received_data['field'])
+            received_updates.append(received_data['value'])          #DELETE ONCE DONE
+
         return {'Received_updates' : received_updates}, 200
 
 
