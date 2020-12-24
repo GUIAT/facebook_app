@@ -40,8 +40,8 @@ class Verification(Resource):
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('field', required = True) #, type=list, location='json'
-    parser.add_argument('value', required = True) #, type=list, location='json'
+    parser.add_argument('field') #, type=list, location='json'
+    parser.add_argument('value') #, type=list, location='json'
     
 
     def get (self):
@@ -55,10 +55,6 @@ class Verification(Resource):
 
         if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
             return int(received_data["hub.challenge"])
-
-        
-        
-
 
 # ------------------------LINES 39 /52 == ?
 
