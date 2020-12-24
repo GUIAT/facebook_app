@@ -60,9 +60,10 @@ class Verification(Resource):
 # ------------------------LINES 39 /52 == ?
 
     def post (self):
-        '''
+        
         if "X-Hub-Signature" not in request.headers:
             abort (403)
+            return {"nique" : "nique"}
         signature = request.headers.get("X-Hub-Signature", "").split(":")[1]
        
         # Generate our own signature based on the request payload
@@ -72,7 +73,8 @@ class Verification(Resource):
         # Ensure the two signatures match
         if not str(mac.hexdigest()) == str(signature):
             abort(403)
-        '''
+            return {"nique" : "nique"}
+        
 
         received_data = Verification.parser.parse_args()
         isThereData = received_data['entry']
