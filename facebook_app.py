@@ -37,15 +37,16 @@ class Updates(Resource):
 # ------------------------LINES 28 /37 == OK
 class Verification(Resource): 
     parser = reqparse.RequestParser()
-    parser.add_argument('hub.mode', location='form')
-    parser.add_argument('hub.challenge', location='form')
-    parser.add_argument('hub.verify_token', location='form')
+    parser.add_argument('hub.mode')
+    parser.add_argument('hub.challenge')
+    parser.add_argument('hub.verify_token') #, location='form'
     parser.add_argument('field') #, type=list, location='json'
     parser.add_argument('value') #, type=list, location='json'
     
 
     def get (self):
         received_data = Verification.parser.parse_args()
+
         # Debugging logs
         app.logger.info(token)  
         app.logger.info(received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token) 
