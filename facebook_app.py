@@ -31,7 +31,7 @@ class Updates(Resource):
 
     def get (self):
         #received_updates = Updates.parser.parse_args()
-        #app.logger.info('All good so far')                #DELETE ONCE DONE
+        app.logger.info(received_updates)                #DELETE ONCE DONE
         return {'Received_updates' : received_updates}
 
 # ------------------------LINES 28 /37 == OK
@@ -59,6 +59,19 @@ class Verification(Resource):
 # ------------------------LINES 39 /52 == ?
 
     def post (self):
+        if "X-Hub-Signature" not in request.headers:
+            abort (403)
+        signature = request.headers.get("X-Hub-Signature", "").split(":")[1]
+       
+        # Generate our own signature based on the request payload
+        secret = os.environ.get('APP_SECRET', '').encode("utf-8")
+        mac = hmac.new(secret, msg=request.data, digestmod=sha1)
+
+        # Ensure the two signatures match
+        if not str(mac.hexdigest()) == str(signature):
+            abort(403)
+
+
         received_data = Verification.parser.parse_args()
         isThereData = received_data['field']
         app.logger.info(isThereData) 
