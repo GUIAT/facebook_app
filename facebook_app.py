@@ -40,8 +40,9 @@ class Verification(Resource):
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('field') #, type=list, location='json'
-    parser.add_argument('value') #, type=list, location='json'
+    parser.add_argument('entry')
+    #parser.add_argument('field') #, type=list, location='json'
+    #parser.add_argument('value') #, type=list, location='json'
     
 
     def get (self):
@@ -59,6 +60,7 @@ class Verification(Resource):
 # ------------------------LINES 39 /52 == ?
 
     def post (self):
+        '''
         if "X-Hub-Signature" not in request.headers:
             abort (403)
         signature = request.headers.get("X-Hub-Signature", "").split(":")[1]
@@ -70,15 +72,17 @@ class Verification(Resource):
         # Ensure the two signatures match
         if not str(mac.hexdigest()) == str(signature):
             abort(403)
-
+        '''
 
         received_data = Verification.parser.parse_args()
-        isThereData = received_data['field']
+        isThereData = received_data['entry']
         app.logger.info(isThereData) 
 
         if isThereData :
-            received_updates.append(received_data['field'])
-            received_updates.append(received_data['value'])          #DELETE ONCE DONE
+            received_updates.append(received_data['entry'])
+            
+            #received_updates.append(received_data['field'])
+            #received_updates.append(received_data['value'])          #DELETE ONCE DONE
 
         return {'Received_updates' : received_updates}, 200
 
