@@ -32,7 +32,7 @@ class Updates(Resource):
     def get (self):
         received_updates = Updates.parser.parse_args()
         app.logger.info('All good so far')                #DELETE ONCE DONE
-        return received_updates
+        return {'Received_updates' : received_updates}
 
 # ------------------------LINES 28 /37 == OK
 class Verification(Resource): 
