@@ -1,9 +1,18 @@
-# TO DO : VALIDATION - OK
-# TO DO : GET JSON - PENDING
+# TO DO : VALIDATION - OK check on how to get environnement valiable token working
+# TO DO : GET JSON - OK
+# TO DO : Check how to validate payload, SHA1 SIGNATURE not working
+# TO DO : figure out a way to get every story id
+# TO DO : store ids in DB + insights in db
+# TO DO : match STORIES ID WITH ITS INSIGHTS
+
 # facebook documentation to follow : 'check event notification' 
 # https://developers.facebook.com/docs/graph-api/webhooks/getting-started?locale=en_US
 # Sample app :https://developers.facebook.com/docs/graph-api/webhooks/sample-apps
 # video taht might help : https://www.youtube.com/watch?v=82cpdEisqsA&t=246s
+# Webhook Insta : https://developers.facebook.com/docs/graph-api/webhooks/reference/instagram/
+
+# request to get all id necessary to request sotries : https://developers.facebook.com/docs/instagram-api/getting-started
+# stories endpoint : https://developers.facebook.com/docs/instagram-api/reference/user/stories
 
 from flask import Flask, request,  jsonify, abort
 from flask_restful import Resource, Api, reqparse
@@ -30,8 +39,8 @@ class Updates(Resource):
     #parser.add_argument('value')
 
     def get (self):
-        #received_updates = Updates.parser.parse_args()
-        app.logger.info(received_updates)                #DELETE ONCE DONE
+        #received_updates = Updates.parser.parse_args()                                  #DELETE ONCE DONE
+        app.logger.info(received_updates)                                                #DELETE ONCE DONE
         return {'Received_updates' : received_updates}
 
 # ------------------------LINES 28 /37 == OK
@@ -41,18 +50,18 @@ class Verification(Resource):
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
     parser.add_argument('entry')
-    #parser.add_argument('field') #, type=list, location='json'
-    #parser.add_argument('value') #, type=list, location='json'
+    #parser.add_argument('field') #, type=list, location='json'                             #DELETE ONCE DONE
+    #parser.add_argument('value') #, type=list, location='json'                             #DELETE ONCE DONE
     
 
     def get (self):
         received_data = Verification.parser.parse_args()
 
         # Debugging logs
-        app.logger.info(token)  
-        app.logger.info(received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token) 
-        app.logger.info(received_data['hub.mode'] == 'subscribe') 
-        app.logger.info(received_data['hub.verify_token'] == token) 
+        app.logger.info(token)                                                                                      #DELETE ONCE DONE
+        app.logger.info(received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token)    #DELETE ONCE DONE
+        app.logger.info(received_data['hub.mode'] == 'subscribe')                                                   #DELETE ONCE DONE
+        app.logger.info(received_data['hub.verify_token'] == token)                                                 #DELETE ONCE DONE
 
         if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
             return int(received_data["hub.challenge"])
@@ -60,7 +69,8 @@ class Verification(Resource):
 # ------------------------LINES 39 /52 == ?
 
     def post (self):
-        
+        '''
+        Does not WOrk
         if "X-Hub-Signature" not in request.headers:
             abort (403)
             return {"nique" : "nique"}
@@ -74,16 +84,15 @@ class Verification(Resource):
         if not str(mac.hexdigest()) == str(signature):
             abort(403)
             return {"nique" : "nique"}
-        
+        '''
 
         received_data = Verification.parser.parse_args()
         isThereData = received_data['entry']
-        app.logger.info(isThereData) 
-
+        
         if isThereData :
             received_updates.append(received_data['entry'])
             
-            #received_updates.append(received_data['field'])
+            #received_updates.append(received_data['field'])           #DELETE ONCE DONE
             #received_updates.append(received_data['value'])          #DELETE ONCE DONE
 
         return {'Received_updates' : received_updates}, 200
@@ -91,7 +100,7 @@ class Verification(Resource):
 
 # ROUTING
 api.add_resource(Updates, '/') 
-#api.add_resource(Verification, '/facebook')
+#api.add_resource(Verification, '/facebook')                        #DELETE ONCE DONE
 api.add_resource(Verification, '/instagram')  
 
 
